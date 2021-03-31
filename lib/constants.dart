@@ -4,7 +4,7 @@ const primaryColor = Color(0xFF2B2B2B);
 const primaryLightColor = Color(0xFFF1E6FF);
 
 const TextStyle kHeading = TextStyle(
-    fontSize: 60,
+    fontSize: 30,
     fontWeight: FontWeight.bold,
     color: Colors.white
 );
