@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:starworks_hireapp_flutter/constants.dart';
+import 'package:starworks_hireapp_flutter/src/ui/main/login/login.dart';
 import 'package:starworks_hireapp_flutter/src/ui/main/onboard/components/background.dart';
 
 class Body extends StatelessWidget {
@@ -49,7 +49,11 @@ class Body extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(6)),
                               child: FlatButton(
                                 // ignore: deprecated_member_use
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return Login();
+                                  }));
+                                },
                                 child: Text(
                                   'LOGIN',
                                   style: kBodyTextBlack,

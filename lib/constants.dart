@@ -10,6 +10,11 @@ const TextStyle kHeading = TextStyle(
     color: Colors.white
 );
 
+const TextStyle kHeadingBasic = TextStyle(
+    fontSize: 30,
+    color: Colors.white
+);
+
 const TextStyle kBodyText = TextStyle(
     fontSize: 18,
     color: Colors.grey
@@ -22,5 +27,11 @@ const TextStyle kBodyTextBlack = TextStyle(
 
 const TextStyle kBodyTextWhite = TextStyle(
     fontSize: 16,
+    color: Colors.white
+);
+
+const TextStyle kBodyTextWhiteBold = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
     color: Colors.white
 );
