@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:starworks_hireapp_flutter/constants.dart';
-import 'package:starworks_hireapp_flutter/src/ui/main/forgotpassword/forgotPassword.dart';
-import 'package:starworks_hireapp_flutter/src/ui/main/forgotpassword/components/background.dart';
+import 'package:starworks_hireapp_flutter/src/ui/main/login/login.dart';
+import 'package:starworks_hireapp_flutter/src/ui/main/signup/components/background.dart';
 import 'package:starworks_hireapp_flutter/src/ui/main/signup/signup.dart';
-
 
 class Body extends StatelessWidget {
   @override
@@ -28,14 +27,14 @@ class Body extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       child: Text(
-                        'LOGIN',
+                        'SIGN UP',
                         style: kHeadingBasic,
                       ),
                     ),
                     Container(
                       padding: EdgeInsets.fromLTRB(16, 16, 0, 40),
                       child: Text(
-                        'Please login with your email and password',
+                        'Please fill the form below correctly',
                         style: kBodyTextWhite,
                       ),
                     ),
@@ -47,12 +46,52 @@ class Body extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
+                                "Full Name",
+                                style: kBodyTextWhite,
+                              ),
+                              TextInput(
+                                icon: FontAwesomeIcons.solidEnvelope,
+                                hint: 'Full Name',
+                                inputType: TextInputType.emailAddress,
+                                inputAction: TextInputAction.next,
+                              ),
+                              Text(
                                 "Email",
                                 style: kBodyTextWhite,
                               ),
                               TextInput(
                                 icon: FontAwesomeIcons.solidEnvelope,
                                 hint: 'Email address',
+                                inputType: TextInputType.emailAddress,
+                                inputAction: TextInputAction.next,
+                              ),
+                              Text(
+                                "Phone Number",
+                                style: kBodyTextWhite,
+                              ),
+                              TextInput(
+                                icon: FontAwesomeIcons.solidEnvelope,
+                                hint: 'Phone Number',
+                                inputType: TextInputType.emailAddress,
+                                inputAction: TextInputAction.next,
+                              ),
+                              Text(
+                                "Company",
+                                style: kBodyTextWhite,
+                              ),
+                              TextInput(
+                                icon: FontAwesomeIcons.solidEnvelope,
+                                hint: 'Company',
+                                inputType: TextInputType.emailAddress,
+                                inputAction: TextInputAction.next,
+                              ),
+                              Text(
+                                "Position",
+                                style: kBodyTextWhite,
+                              ),
+                              TextInput(
+                                icon: FontAwesomeIcons.solidEnvelope,
+                                hint: 'Position',
                                 inputType: TextInputType.emailAddress,
                                 inputAction: TextInputAction.next,
                               ),
@@ -65,40 +104,36 @@ class Body extends StatelessWidget {
                                 hint: 'Your Password',
                                 inputAction: TextInputAction.done,
                               ),
+                              Text(
+                                "Password Confirmation",
+                                style: kBodyTextWhite,
+                              ),
+                              PasswordInput(
+                                icon: FontAwesomeIcons.lock,
+                                hint: 'Password Confirmation',
+                                inputAction: TextInputAction.done,
+                              ),
                             ],
                           ),
                         ],
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(left:220, bottom: 8),
-                      child: FlatButton(
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return ForgotPassword();
-                          }));
-                        },
-                        child: Text(
-                          'Forget password?',
-                          style: kBodyTextWhiteBold,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: secondaryColor,
                           borderRadius: BorderRadius.circular(6)),
                       // ignore: deprecated_member_use
                       child: FlatButton(
+                        // ignore: deprecated_member_use
                         onPressed: () {
                           // Navigator.push(context, MaterialPageRoute(builder: (context){
-                          //   return Dialog();
+                          //   return Login();
                           // }));
                         },
                         child: Text(
-                          'LOGIN',
+                          'SIGN UP',
                           style: kBodyTextWhite,
                         ),
                       ),
@@ -108,23 +143,24 @@ class Body extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.only(left: 16, bottom: 16, top: 16),
+                          padding: EdgeInsets.only(left: 16, bottom: 16),
                           child: Center(
                             child: Text(
-                              "You don't have an account?",
+                              "You have an account?",
                               style: kBodyTextWhite,
                             ),
                           ),
                         ),
                         Container(
+                          padding: EdgeInsets.only(bottom: 16),
                           child: FlatButton(
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context){
-                                return SignUp();
+                                return Login();
                               }));
                             },
                             child: Text(
-                              'Sign up',
+                              'Login here',
                               style: kBodyTextWhiteBold,
                             ),
                           ),
