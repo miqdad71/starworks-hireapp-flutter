@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:starworks_hireapp_flutter/constants.dart';
 import 'package:starworks_hireapp_flutter/src/ui/main/forgotpassword/forgotPassword.dart';
 import 'package:starworks_hireapp_flutter/src/ui/main/forgotpassword/components/background.dart';
+import 'package:starworks_hireapp_flutter/src/ui/main/mainpage/mainPage.dart';
 import 'package:starworks_hireapp_flutter/src/ui/main/signup/signup.dart';
 
 
@@ -93,9 +94,9 @@ class Body extends StatelessWidget {
                       // ignore: deprecated_member_use
                       child: FlatButton(
                         onPressed: () {
-                          // Navigator.push(context, MaterialPageRoute(builder: (context){
-                          //   return Dialog();
-                          // }));
+                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                            return MainPage();
+                          }));
                         },
                         child: Text(
                           'LOGIN',
@@ -118,11 +119,7 @@ class Body extends StatelessWidget {
                         ),
                         Container(
                           child: FlatButton(
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context){
-                                return SignUp();
-                              }));
-                            },
+                            onPressed: () => tampilOption(context),
                             child: Text(
                               'Sign up',
                               style: kBodyTextWhiteBold,
@@ -136,6 +133,29 @@ class Body extends StatelessWidget {
               ),
             ))
       ],
+    );
+  }
+  tampilOption(BuildContext ctx) {
+    showDialog(
+        builder: (context) => SimpleDialog(
+          title: Text('Sign up as?'),
+          children: [
+            SimpleDialogOption(
+              child: Text('Engineer (Worker)'),
+              onPressed: () {
+                debugPrint('Wise choice 2');
+                // Navigator.of(context).pop();
+              },
+            ),
+            SimpleDialogOption(
+              child: Text('Company (Recruiter)'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+              },
+            )
+          ],
+        ), context: ctx
     );
   }
 }

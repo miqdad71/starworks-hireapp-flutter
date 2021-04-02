@@ -97,11 +97,7 @@ class Body extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(6)),
                                 child: FlatButton(
                                   // ignore: deprecated_member_use
-                                  onPressed: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                                      return SignUp();
-                                    }));
-                                  },
+                                  onPressed: () => tampilOption(context),
                                   child: Text(
                                     'SIGN UP',
                                     style: kBodyTextWhite,
@@ -118,6 +114,29 @@ class Body extends StatelessWidget {
               ),
             ))
       ],
+    );
+  }
+  tampilOption(BuildContext ctx) {
+    showDialog(
+        builder: (context) => SimpleDialog(
+          title: Text('Sign up as?'),
+          children: [
+            SimpleDialogOption(
+              child: Text('Engineer (Worker)'),
+              onPressed: () {
+                debugPrint('Wise choice 2');
+                // Navigator.of(context).pop();
+              },
+            ),
+            SimpleDialogOption(
+              child: Text('Company (Recruiter)'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+              },
+            )
+          ],
+        ), context: ctx
     );
   }
 }
