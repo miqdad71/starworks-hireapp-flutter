@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:starworks_hireapp_flutter/src/ui/main/mainpage/home/components/body.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -14,20 +15,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          color: Colors.white,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Home'),
-                
-              ],
-            ),
-          ),
-        ),
-      ),
+      body: Body(),
     );
   }
 }
