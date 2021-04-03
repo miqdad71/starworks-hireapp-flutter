@@ -8,22 +8,6 @@ class Body extends StatelessWidget {
     return Stack(
       children: [
         Background(),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SafeArea(
-            child: Container(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Home'),
-
-                  ],
-                ),
-              ),
-            ),
-          ),
-        )
       ],
     );
   }
