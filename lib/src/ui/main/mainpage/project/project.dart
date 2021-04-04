@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:starworks_hireapp_flutter/constants.dart';
 
 class Project extends StatefulWidget {
   @override
@@ -14,6 +15,11 @@ class _ProjectState extends State<Project> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text('Project'),
+        backgroundColor: primaryColor,
+      ),
       body: SafeArea(
         child: Container(
           color: Colors.white,

@@ -8,6 +8,7 @@ class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
+
 class _HomeState extends State<Home> {
   List users = [];
   bool isLoading = false;
@@ -25,13 +26,13 @@ class _HomeState extends State<Home> {
     // var url = "https://randomuser.me/api/?results=50";
     var url = "http://54.210.205.208:4000/engineer";
     var response = await http.get(url);
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       var items = json.decode(response.body)['data'];
       setState(() {
         users = items;
         isLoading = false;
       });
-    }else{
+    } else {
       setState(() {
         users = [];
         isLoading = false;
@@ -46,8 +47,12 @@ class _HomeState extends State<Home> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(180),
         child: AppBar(
-          backgroundColor: primaryColor,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
           flexibleSpace: Container(
+            decoration: BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(20))),
             padding: EdgeInsets.only(left: 16),
             child: Center(
               child: Row(
@@ -113,8 +118,9 @@ class _HomeState extends State<Home> {
                     borderRadius: BorderRadius.circular(60 / 2),
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage('http://54.210.205.208:4000/images/'+
-                            profileUrl))),
+                        image: NetworkImage(
+                            'http://54.210.205.208:4000/images/' +
+                                profileUrl))),
               ),
               SizedBox(
                 width: 20,

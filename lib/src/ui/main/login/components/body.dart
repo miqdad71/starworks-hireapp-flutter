@@ -1,14 +1,62 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starworks_hireapp_flutter/constants.dart';
 import 'package:starworks_hireapp_flutter/src/ui/main/forgotpassword/forgotPassword.dart';
 import 'package:starworks_hireapp_flutter/src/ui/main/forgotpassword/components/background.dart';
-import 'package:starworks_hireapp_flutter/src/ui/main/mainpage/mainPage.dart';
 import 'package:starworks_hireapp_flutter/src/ui/main/signup/signup.dart';
 
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
 
-class Body extends StatelessWidget {
+class _BodyState extends State<Body> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
+
+  bool visible = false;
+
+  @override
+  initState(){
+    super.initState();
+  }
+
+  signIn(String email, String password) async {
+    String url = "http://54.210.205.208:4000/account/login";
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map body = {"email": email, "password": password};
+    var jsonResponse;
+    var res = await http.post(url, body: body);
+    if (res.statusCode == 200) {
+      jsonResponse = json.decode(res.body);
+
+      print("Response status: ${res.statusCode}");
+      print("Response status: ${res.body}");
+
+      if (jsonResponse != null) {
+        setState(() {
+          visible = false;
+        });
+
+        sharedPreferences.setString("token", jsonResponse['token']);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          './src/ui/main/login/MainPage', (Route<dynamic> route) => false);
+        /*
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => MainPage()),
+                (Route<dynamic> route) => false);*/
+      } else {
+        setState(() {
+          visible = false;
+        });
+        print("Response status: ${res.body}");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -27,7 +75,8 @@ class Body extends StatelessWidget {
                       height: 100,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       child: Text(
                         'LOGIN',
                         style: kHeadingBasic,
@@ -51,20 +100,46 @@ class Body extends StatelessWidget {
                                 "Email",
                                 style: kBodyTextWhite,
                               ),
-                              TextInput(
-                                icon: FontAwesomeIcons.solidEnvelope,
-                                hint: 'Email address',
-                                inputType: TextInputType.emailAddress,
-                                inputAction: TextInputAction.next,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white, borderRadius: BorderRadius.circular(4)),
+                                  child: TextField(
+                                    controller: _emailController,
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                      border: InputBorder.none,
+                                      hintText: ("ex : myname@gmail.com"),
+                                      hintStyle: kBodyText,
+                                    ),
+                                    style: kBodyTextBlack,
+                                  ),
+                                ),
                               ),
                               Text(
                                 "Password",
                                 style: kBodyTextWhite,
                               ),
-                              PasswordInput(
-                                icon: FontAwesomeIcons.lock,
-                                hint: 'Your Password',
-                                inputAction: TextInputAction.done,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white, borderRadius: BorderRadius.circular(4)),
+                                  child: TextField(
+                                    controller: _passController,
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                      border: InputBorder.none,
+                                      hintText: ("minimum 8 character"),
+                                      hintStyle: kBodyText,
+                                    ),
+                                    obscureText: true,
+                                    style: kBodyTextBlack,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -72,10 +147,11 @@ class Body extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(left:220, bottom: 8),
+                      padding: EdgeInsets.only(left: 220, bottom: 8),
                       child: FlatButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
                             return ForgotPassword();
                           }));
                         },
@@ -93,23 +169,39 @@ class Body extends StatelessWidget {
                           borderRadius: BorderRadius.circular(6)),
                       // ignore: deprecated_member_use
                       child: FlatButton(
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return MainPage();
-                          }));
-                        },
+                        onPressed: /*_emailController.text == "" ||
+                                _passController.text == ""
+                            ? null
+                            :*/ () {
+                                setState(() {
+                                  visible = true;
+                                });
+                                signIn(_emailController.text,
+                                    _passController.text);
+                              },
                         child: Text(
                           'LOGIN',
                           style: kBodyTextWhite,
                         ),
                       ),
                     ),
-
+                    Center(
+                      child: Visibility(
+                        maintainSize: true,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        visible: visible,
+                        child: Container(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.only(left: 16, bottom: 16, top: 16),
+                          padding:
+                              EdgeInsets.only(left: 16, bottom: 16, top: 16),
                           child: Center(
                             child: Text(
                               "You don't have an account?",
@@ -135,115 +227,29 @@ class Body extends StatelessWidget {
       ],
     );
   }
+
   tampilOption(BuildContext ctx) {
     showDialog(
         builder: (context) => SimpleDialog(
-          title: Text('Sign up as?'),
-          children: [
-            SimpleDialogOption(
-              child: Text('Engineer (Worker)'),
-              onPressed: () {
-                debugPrint('Wise choice 2');
-                // Navigator.of(context).pop();
-              },
+              title: Text('Sign up as?'),
+              children: [
+                SimpleDialogOption(
+                  child: Text('Engineer (Worker)'),
+                  onPressed: () {
+                    debugPrint('Wise choice 2');
+                    // Navigator.of(context).pop();
+                  },
+                ),
+                SimpleDialogOption(
+                  child: Text('Company (Recruiter)'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SignUp()));
+                  },
+                )
+              ],
             ),
-            SimpleDialogOption(
-              child: Text('Company (Recruiter)'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
-              },
-            )
-          ],
-        ), context: ctx
-    );
-  }
-}
-
-class TextInput extends StatelessWidget {
-  const TextInput({
-    Key key,
-    @required this.icon,
-    @required this.hint,
-    this.inputType,
-    this.inputAction,
-  }) : super(key: key);
-
-  final IconData icon;
-  final String hint;
-  final TextInputType inputType;
-  final TextInputAction inputAction;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(4)),
-        child: TextField(
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-            border: InputBorder.none,
-            hintText: hint,
-            // prefixIcon: Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20),
-            //   child: Icon(
-            //     icon,
-            //     color: Colors.grey,
-            //     size: 30,
-            //   ),
-            // ),
-            hintStyle: kBodyText,
-          ),
-          style: kBodyText,
-          keyboardType: inputType,
-          textInputAction: inputAction,
-        ),
-      ),
-    );
-  }
-}
-
-class PasswordInput extends StatelessWidget {
-  const PasswordInput({
-    Key key,
-    @required this.icon,
-    @required this.hint,
-    this.inputAction,
-  }) : super(key: key);
-
-  final IconData icon;
-  final String hint;
-  final TextInputAction inputAction;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(4)),
-        child: TextField(
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-            border: InputBorder.none,
-            hintText: hint,
-            // prefixIcon: Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20),
-            //   child: Icon(
-            //     icon,
-            //     color: Colors.grey,
-            //     size: 30,
-            //   ),
-            // ),
-            hintStyle: kBodyText,
-          ),
-          obscureText: true,
-          style: kBodyText,
-          textInputAction: inputAction,
-        ),
-      ),
-    );
+        context: ctx);
   }
 }

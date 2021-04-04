@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:starworks_hireapp_flutter/src/ui/main/mainpage/mainPage.dart';
 import 'src/ui/main/splash/splashScreen.dart';
+import './src/ui/main/login/login.dart';
+import './src/ui/main/mainpage/mainPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,6 +26,10 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: SplashScreen(),
+      routes: <String, WidgetBuilder>{
+        './src/ui/main/login/Login' : (BuildContext context) => new Login(),
+        './src/ui/main/login/MainPage' : (BuildContext context) => new MainPage()
+      },
     );
   }
 }
