@@ -1,9 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
-
-
+import '../../../../../constants.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -15,7 +14,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-
     super.initState();
     this.fetchUser();
   }
@@ -25,7 +23,7 @@ class _HomeState extends State<Home> {
       isLoading = true;
     });
     // var url = "https://randomuser.me/api/?results=50";
-    var url = "http://10.0.2.2:4000/engineer";
+    var url = "http://54.210.205.208:4000/engineer";
     var response = await http.get(url);
     if(response.statusCode == 200){
       var items = json.decode(response.body)['data'];
@@ -45,8 +43,43 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Listing Engineer"),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(180),
+        child: AppBar(
+          backgroundColor: primaryColor,
+          flexibleSpace: Container(
+            padding: EdgeInsets.only(left: 16),
+            child: Center(
+              child: Row(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Login as ",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Text(
+                        "Hai, ",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 28),
+                      ),
+                      SizedBox(
+                        height: 32,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
       body: getBody(),
     );
@@ -80,7 +113,7 @@ class _HomeState extends State<Home> {
                     borderRadius: BorderRadius.circular(60 / 2),
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage('http://10.0.2.2:4000/images/'+
+                        image: NetworkImage('http://54.210.205.208:4000/images/'+
                             profileUrl))),
               ),
               SizedBox(

@@ -23,9 +23,7 @@ class Background extends StatelessWidget {
                     children: [
                       Text(
                         "Login as ",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16),
+                        style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                       SizedBox(
                         height: 16,
