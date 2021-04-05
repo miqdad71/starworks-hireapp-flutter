@@ -62,14 +62,14 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Login as ",
+                        "Login as Company",
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                       SizedBox(
                         height: 16,
                       ),
                       Text(
-                        "Hai, ",
+                        "Hai, Etos Indonusa",
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

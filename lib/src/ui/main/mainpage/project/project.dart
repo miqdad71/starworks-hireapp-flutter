@@ -16,6 +16,12 @@ class _ProjectState extends State<Project> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.add),
+          )
+        ],
         automaticallyImplyLeading: false,
         title: Text('Project'),
         backgroundColor: primaryColor,
