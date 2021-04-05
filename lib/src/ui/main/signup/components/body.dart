@@ -1,12 +1,57 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:starworks_hireapp_flutter/constants.dart';
+import 'package:starworks_hireapp_flutter/src/model/user.dart';
 import 'package:starworks_hireapp_flutter/src/ui/main/login/login.dart';
 import 'package:starworks_hireapp_flutter/src/ui/main/signup/components/background.dart';
-import 'package:starworks_hireapp_flutter/src/ui/main/signup/signup.dart';
+import 'package:http/http.dart' as http;
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  TextEditingController _fullNameController = TextEditingController();
+  TextEditingController _emailAddressController = TextEditingController();
+  TextEditingController _phoneNumberController = TextEditingController();
+  TextEditingController _companyController = TextEditingController();
+  TextEditingController _positionController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _passwordConfirmationController =
+      TextEditingController();
+
+  Future<User> userSignUp(
+    String fullName,
+    String email,
+    String phoneNumber,
+    String company,
+    String position,
+    String password,
+  ) async {
+    const url = "http://54.210.205.208:4000/account";
+    Map<String, dynamic> requestPayload = {
+      "ac_name": fullName,
+      "ac_email": email,
+      "ac_phone": phoneNumber,
+      "cn_company": company,
+      "cn_position": position,
+      "ac_password": password,
+      "ac_level": 1,
+    };
+
+    final http.Response response = await http.post(url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestPayload));
+    if (response.statusCode == 201) {
+      return User.fromJson(json.decode(response.body));
+    } else {
+      throw Exception("Fail to sign up user");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -25,7 +70,8 @@ class Body extends StatelessWidget {
                       height: 100,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       child: Text(
                         'SIGN UP',
                         style: kHeadingBasic,
@@ -45,73 +91,100 @@ class Body extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Full Name",
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                controller: _fullNameController,
                                 style: kBodyTextWhite,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                    hintText: 'ex : Jonathan Abdul',
+                                    hintStyle: kBodyTextWhite,
+                                    labelText: 'Full Name',
+                                    labelStyle: kBodyTextBig),
                               ),
-                              TextInput(
-                                icon: FontAwesomeIcons.solidEnvelope,
-                                hint: 'Full Name',
-                                inputType: TextInputType.emailAddress,
-                                inputAction: TextInputAction.next,
+                              SizedBox(
+                                height: 10,
                               ),
-                              Text(
-                                "Email",
+                              TextFormField(
+                                controller: _emailAddressController,
                                 style: kBodyTextWhite,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                    hintText: 'ex : your@mail.com',
+                                    hintStyle: kBodyTextWhite,
+                                    labelText: 'Email Address',
+                                    labelStyle: kBodyTextBig),
                               ),
-                              TextInput(
-                                icon: FontAwesomeIcons.solidEnvelope,
-                                hint: 'Email address',
-                                inputType: TextInputType.emailAddress,
-                                inputAction: TextInputAction.next,
+                              SizedBox(
+                                height: 10,
                               ),
-                              Text(
-                                "Phone Number",
+                              TextFormField(
+                                controller: _companyController,
                                 style: kBodyTextWhite,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                    hintText: 'ex : PT Bangkit Harapan',
+                                    hintStyle: kBodyTextWhite,
+                                    labelText: 'Company Name',
+                                    labelStyle: kBodyTextBig),
                               ),
-                              TextInput(
-                                icon: FontAwesomeIcons.solidEnvelope,
-                                hint: 'Phone Number',
-                                inputType: TextInputType.emailAddress,
-                                inputAction: TextInputAction.next,
+                              SizedBox(
+                                height: 10,
                               ),
-                              Text(
-                                "Company",
+                              TextFormField(
+                                controller: _positionController,
                                 style: kBodyTextWhite,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                    hintText: 'ex : Staff',
+                                    hintStyle: kBodyTextWhite,
+                                    labelText: 'Position',
+                                    labelStyle: kBodyTextBig),
                               ),
-                              TextInput(
-                                icon: FontAwesomeIcons.solidEnvelope,
-                                hint: 'Company',
-                                inputType: TextInputType.emailAddress,
-                                inputAction: TextInputAction.next,
+                              SizedBox(
+                                height: 10,
                               ),
-                              Text(
-                                "Position",
+                              TextFormField(
+                                controller: _passwordController,
                                 style: kBodyTextWhite,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                    hintText: 'ex : 0812********',
+                                    hintStyle: kBodyTextWhite,
+                                    labelText: 'Phone Number',
+                                    labelStyle: kBodyTextBig),
                               ),
-                              TextInput(
-                                icon: FontAwesomeIcons.solidEnvelope,
-                                hint: 'Position',
-                                inputType: TextInputType.emailAddress,
-                                inputAction: TextInputAction.next,
+                              SizedBox(
+                                height: 10,
                               ),
-                              Text(
-                                "Password",
+                              TextFormField(
                                 style: kBodyTextWhite,
+                                obscureText: true,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                    hintText: 'minimum 8 character',
+                                    hintStyle: kBodyTextWhite,
+                                    labelText: 'Password',
+                                    labelStyle: kBodyTextBig),
                               ),
-                              PasswordInput(
-                                icon: FontAwesomeIcons.lock,
-                                hint: 'Your Password',
-                                inputAction: TextInputAction.done,
+                              SizedBox(
+                                height: 10,
                               ),
-                              Text(
-                                "Password Confirmation",
+                              TextFormField(
                                 style: kBodyTextWhite,
+                                obscureText: true,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                    hintText:
+                                        'type the same as your password above',
+                                    hintStyle: kBodyTextWhite,
+                                    labelText: 'Password Confirmation',
+                                    labelStyle: kBodyTextBig),
                               ),
-                              PasswordInput(
-                                icon: FontAwesomeIcons.lock,
-                                hint: 'Password Confirmation',
-                                inputAction: TextInputAction.done,
+                              SizedBox(
+                                height: 10,
                               ),
                             ],
                           ),
@@ -119,7 +192,8 @@ class Body extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: secondaryColor,
@@ -127,18 +201,13 @@ class Body extends StatelessWidget {
                       // ignore: deprecated_member_use
                       child: FlatButton(
                         // ignore: deprecated_member_use
-                        onPressed: () {
-                          // Navigator.push(context, MaterialPageRoute(builder: (context){
-                          //   return Login();
-                          // }));
-                        },
+                        onPressed: () {},
                         child: Text(
                           'SIGN UP',
                           style: kBodyTextWhite,
                         ),
                       ),
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -155,7 +224,8 @@ class Body extends StatelessWidget {
                           padding: EdgeInsets.only(bottom: 16),
                           child: FlatButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
                                 return Login();
                               }));
                             },
@@ -172,94 +242,6 @@ class Body extends StatelessWidget {
               ),
             ))
       ],
-    );
-  }
-}
-
-class TextInput extends StatelessWidget {
-  const TextInput({
-    Key key,
-    @required this.icon,
-    @required this.hint,
-    this.inputType,
-    this.inputAction,
-  }) : super(key: key);
-
-  final IconData icon;
-  final String hint;
-  final TextInputType inputType;
-  final TextInputAction inputAction;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(4)),
-        child: TextField(
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-            border: InputBorder.none,
-            hintText: hint,
-            // prefixIcon: Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20),
-            //   child: Icon(
-            //     icon,
-            //     color: Colors.grey,
-            //     size: 30,
-            //   ),
-            // ),
-            hintStyle: kBodyText,
-          ),
-          style: kBodyText,
-          keyboardType: inputType,
-          textInputAction: inputAction,
-        ),
-      ),
-    );
-  }
-}
-
-class PasswordInput extends StatelessWidget {
-  const PasswordInput({
-    Key key,
-    @required this.icon,
-    @required this.hint,
-    this.inputAction,
-  }) : super(key: key);
-
-  final IconData icon;
-  final String hint;
-  final TextInputAction inputAction;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(4)),
-        child: TextField(
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-            border: InputBorder.none,
-            hintText: hint,
-            // prefixIcon: Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20),
-            //   child: Icon(
-            //     icon,
-            //     color: Colors.grey,
-            //     size: 30,
-            //   ),
-            // ),
-            hintStyle: kBodyText,
-          ),
-          obscureText: true,
-          style: kBodyText,
-          textInputAction: inputAction,
-        ),
-      ),
     );
   }
 }
